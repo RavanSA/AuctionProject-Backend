@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <UserSecretsId>aefa38f9-375a-46f3-8107-2570034c62e7</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Configurations\20220829100113_addPictureColumnToıTEM.cs" />
+    <Compile Remove="Configurations\20220829100113_addPictureColumnToıTEM.Designer.cs" />
+    <Compile Remove="Migrations\20220526162002_Reset.cs" />
+    <Compile Remove="Migrations\20220526162002_Reset.Designer.cs" />
+    <Compile Remove="Migrations\20220526163848_Reset2.cs" />
+    <Compile Remove="Migrations\20220526163848_Reset2.Designer.cs" />
+    <Compile Remove="Migrations\20220526164012_messagemigration.cs" />
+    <Compile Remove="Migrations\20220526164012_messagemigration.Designer.cs" />
+    <Compile Remove="Migrations\20220527132954_mig9.cs" />
+    <Compile Remove="Migrations\20220527132954_mig9.Designer.cs" />
+    <Compile Remove="Migrations\20220527134021_mig10.cs" />
+    <Compile Remove="Migrations\20220527134021_mig10.Designer.cs" />
+    <Compile Remove="Migrations\20220728125335_CategoryColAddedToItems.cs" />
+    <Compile Remove="Migrations\20220728125335_CategoryColAddedToItems.Designer.cs" />
+    <Compile Remove="Migrations\20220728133300_CategoryColAddedToItems2.cs" />
+    <Compile Remove="Migrations\20220728133300_CategoryColAddedToItems2.Designer.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.2" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
+    <PackageReference Include="NETCore.MailKit" Version="2.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Application\Application.csproj" />
+    <ProjectReference Include="..\..\Core\Common\Common.csproj" />
+    <ProjectReference Include="..\AuctionSystem.Infrastructure\AuctionSystem.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,75 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <UserSecretsId>aefa38f9-375a-46f3-8107-2570034c62e7</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Common\**" />
+    <Compile Remove="Hubs\**" />
+    <Compile Remove="SwaggerExamples\Requests\Admin\**" />
+    <Compile Remove="SwaggerExamples\Responses\Admin\**" />
+    <Content Remove="Common\**" />
+    <Content Remove="Hubs\**" />
+    <Content Remove="SwaggerExamples\Requests\Admin\**" />
+    <Content Remove="SwaggerExamples\Responses\Admin\**" />
+    <EmbeddedResource Remove="Common\**" />
+    <EmbeddedResource Remove="Hubs\**" />
+    <EmbeddedResource Remove="SwaggerExamples\Requests\Admin\**" />
+    <EmbeddedResource Remove="SwaggerExamples\Responses\Admin\**" />
+    <None Remove="Common\**" />
+    <None Remove="Hubs\**" />
+    <None Remove="SwaggerExamples\Requests\Admin\**" />
+    <None Remove="SwaggerExamples\Responses\Admin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\AdminController.cs" />
+    <Compile Remove="MiddleWares\AuthorizationHeaderMiddleware.cs" />
+    <Compile Remove="MiddleWares\CustomExceptionHandlerMiddleware.cs" />
+    <Compile Remove="Models\UsersFilter.cs" />
+    <Compile Remove="Services\ResponseCacheService.cs" />
+    <Compile Remove="SwaggerExamples\Requests\Items\UpdateItemRequestExample.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.2" />
+    <PackageReference Include="MailKit" Version="3.2.0" />
+    <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
+    <PackageReference Include="NETCore.MailKit" Version="2.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.3.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="5.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Common\Common.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\AuctionSystem.Infrastructure\AuctionSystem.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Persistence\Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="MiddleWares\" />
+  </ItemGroup>
+
+</Project>
