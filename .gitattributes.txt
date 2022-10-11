@@ -1,3 +1,1 @@
-*.cs linguist-detectable=true
 *.kt linguist-detectable=false
-*.xml linguist-detectable=false
