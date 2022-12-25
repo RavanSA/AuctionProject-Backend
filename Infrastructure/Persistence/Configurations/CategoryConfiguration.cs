@@ -18,7 +18,7 @@
             builder
                 .Property(p => p.Name)
                 .IsRequired()
-                .HasMaxLength(ModelConstants.Category.NameMaxLength);
+                .HasMaxLength(250);
 
             builder
                 .HasMany(x => x.SubCategories)

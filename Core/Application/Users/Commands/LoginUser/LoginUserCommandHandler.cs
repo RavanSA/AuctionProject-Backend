@@ -1,10 +1,7 @@
 ﻿namespace Application.Users.Commands.LoginUser
 {
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Common;
-    using Common.Exceptions;
     using Common.Interfaces;
     using Common.Models;
     using Jwt;
@@ -12,23 +9,23 @@
 
     public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Response<AuthSuccessResponse>>
     {
-        private readonly IMediator mediator;
-        private readonly IUserManager userManager;
+        private readonly IMediator _mediator;
+        private readonly IUserManager _userManager;
 
         public LoginUserCommandHandler(IUserManager userManager, IMediator mediator)
         {
-            this.userManager = userManager;
-            this.mediator = mediator;
+            _userManager = userManager;
+            _mediator = mediator;
         }
 
         public async Task<Response<AuthSuccessResponse>> Handle(LoginUserCommand request,
             CancellationToken cancellationToken)
         {
 
-            var (result, userId) = await this.userManager.SignIn(request.Email, request.Password);
+            var (result, userId) = await _userManager.SignIn(request.Email, request.Password);
 
    
-            var model = await this.mediator
+            var model = await _mediator
                 .Send(new GenerateJwtTokenCommand(userId, request.Email), cancellationToken);
             return new Response<AuthSuccessResponse>(model);
         }

@@ -2,30 +2,25 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using Common;
-    using Common.Exceptions;
     using Common.Interfaces;
     using MediatR;
 
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand>
     {
-        private readonly IUserManager userManager;
+        private readonly IUserManager _userManager;
 
         public CreateUserCommandHandler(IUserManager userManager)
         {
-            this.userManager = userManager;
+            _userManager = userManager;
         }
 
         public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var result = await this.userManager.CreateUserAsync(request.Email, request.Password, request.FullName);
+            var result = await _userManager.CreateUserAsync(request.Email, request.Password, request.FullName);
             if (!result.Succeeded)
             {
-                throw new BadRequestException(ExceptionMessages.User.UserNotCreatedSuccessfully);
+                //TODO throw exception;
             }
-
-           
-
 
             return Unit.Value;
         }

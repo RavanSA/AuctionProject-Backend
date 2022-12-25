@@ -5,11 +5,6 @@
 
     public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
     {
-        public LoginUserCommandValidator()
-        {
-            this.RuleFor(p => p.Email).NotEmpty().Matches(ModelConstants.User.EmailRegex);
-            this.RuleFor(p => p.Password).NotEmpty();
-           
-        }
+        public LoginUserCommandValidator(){}
     }
 }

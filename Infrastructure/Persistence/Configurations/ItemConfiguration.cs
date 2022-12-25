@@ -18,12 +18,12 @@
             builder
                 .Property(p => p.Title)
                 .IsRequired()
-                .HasMaxLength(ModelConstants.Item.TitleMaxLength);
+                .HasMaxLength(250);
 
             builder
                 .Property(p => p.Description)
                 .IsRequired()
-                .HasMaxLength(ModelConstants.Item.DescriptionMaxLength);
+                .HasMaxLength(500);
 
             builder
                 .Property(p => p.StartingPrice)

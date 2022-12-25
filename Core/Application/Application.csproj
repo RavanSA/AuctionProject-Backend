@@ -5,28 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Admin\**" />
-    <Compile Remove="Bids\Queries\NewFolder1\**" />
-    <Compile Remove="Bids\Queries\NewFolder\**" />
-    <Compile Remove="Items\Commands\UpdateItemPicture\**" />
-    <Compile Remove="Notifications\**" />
-    <EmbeddedResource Remove="Admin\**" />
-    <EmbeddedResource Remove="Bids\Queries\NewFolder1\**" />
-    <EmbeddedResource Remove="Bids\Queries\NewFolder\**" />
-    <EmbeddedResource Remove="Items\Commands\UpdateItemPicture\**" />
-    <EmbeddedResource Remove="Notifications\**" />
-    <None Remove="Admin\**" />
-    <None Remove="Bids\Queries\NewFolder1\**" />
-    <None Remove="Bids\Queries\NewFolder\**" />
-    <None Remove="Items\Commands\UpdateItemPicture\**" />
-    <None Remove="Notifications\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="JWTSettings\CloudinaryOptions.cs" />
-    <Compile Remove="JWTSettings\RedisCacheOptions.cs" />
-    <Compile Remove="JWTSettings\SendGridOptions.cs" />
-    <Compile Remove="Common\Interfaces\IResponseCacheService.cs" />
+    <Compile Remove="Common\Abstraction\IResponseCacheService.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,11 +25,6 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
     <PackageReference Include="NETCore.MailKit" Version="2.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
 </Project>

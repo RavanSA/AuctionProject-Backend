@@ -13,23 +13,20 @@
 
     public class UserManagerService : IUserManager
     {
-        private readonly IAuctionSystemDbContext context;
-        private readonly RoleManager<IdentityRole> roleManager;
-        private readonly UserManager<AuctionUser> userManager;
+        private readonly IAuctionSystemDbContext _context;
+        private readonly UserManager<AuctionUser> _userManager;
 
         public UserManagerService(
             UserManager<AuctionUser> userManager,
-            RoleManager<IdentityRole> roleManager,
             IAuctionSystemDbContext context)
         {
-            this.userManager = userManager;
-            this.roleManager = roleManager;
-            this.context = context;
+            _userManager = userManager;
+            _context = context;
         }
 
         public async Task<User> GetUserByIdAsync(string id)
         {
-            var result = await this.context
+            var result = await _context
                 .Users
                 .Where(u => u.Id == id)
                 .SingleOrDefaultAsync();
@@ -60,39 +57,30 @@
                 FullName = fullName
             };
 
-            var result = await this.userManager.CreateAsync(user, password);
+            var result = await _userManager.CreateAsync(user, password);
             return result.ToApplicationResult();
         }
 
         public async Task<Result> CreateUserAsync(AuctionUser user, string password)
         {
-            var result = await this.userManager.CreateAsync(user, password);
+            var result = await _userManager.CreateAsync(user, password);
             return result.ToApplicationResult();
         }
 
         public async Task<(Result Result, string UserId)> SignIn(string email, string password)
         {
-            var user = await this.GetDomainUserByEmailAsync(email);
+            var user = await this.GetUserByEmailAsync(email);
             if (user == null)
             {
-                return (Result.Failure(ExceptionMessages.User.InvalidCredentials), null);
+                return (Result.Failure("Error Occured"), null);
             }
 
-            if (await this.userManager.IsLockedOutAsync(user))
-            {
-                return (
-                    Result.Failure(
-                        ExceptionMessages.User.AccountLockout), null);
-            }
-
-            var passwordValid = await this.userManager.CheckPasswordAsync(user, password);
+            var passwordValid = await _userManager.CheckPasswordAsync(user, password);
             if (!passwordValid)
             {
-                await this.userManager.AccessFailedAsync(user);
-                return (Result.Failure(ExceptionMessages.User.InvalidCredentials), null);
+                await _userManager.AccessFailedAsync(user);
+                return (Result.Failure("Error Occured"), null);
             }
-
-           
 
             return (Result.Success(), user.Id);
         }
@@ -100,16 +88,12 @@
 
         public async Task<string> GetFirstUserId()
         {
-            var user = await this.context.Users.FirstAsync();
+            var user = await _context.Users.FirstAsync();
             return user.Id;
         }
 
-        private async Task<AuctionUser> GetDomainUserByEmailAsync(string email)
-            => await this.context.Users.Where(u => u.Email == email).SingleOrDefaultAsync();
-
-        private async Task<RefreshToken> GetLastValidToken(string currentUserId, CancellationToken cancellationToken)
-            => await this.context.RefreshTokens.SingleOrDefaultAsync(
-                x => x.UserId == currentUserId && !x.Invalidated,
-                cancellationToken);
+        private async Task<AuctionUser> GetUserByEmailAsync(string email)
+            => await _context.Users.Where(u => u.Email == email).SingleOrDefaultAsync();
     }
+
 }

@@ -19,7 +19,6 @@ namespace Application.Users.Commands.Logout
 
         public async Task<Unit> Handle(LogoutUserCommand request, CancellationToken cancellationToken)
         {
-            // If we don't have refresh token it means that user is already logged out
             if (request.RefreshToken == null)
             {
                 return Unit.Value;

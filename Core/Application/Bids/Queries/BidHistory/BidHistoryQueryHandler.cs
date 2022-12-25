@@ -16,15 +16,13 @@ namespace Application.Bids.Queries.BidHistory
 
     public class BidHistoryQueryHandler : IRequestHandler<BidHistoryQuery, PagedResponse<BidHistoryQueryResponseModel>>
     {
-        private readonly IAuctionSystemDbContext context;
-        private readonly IDateTime created;
-        private readonly IMapper mapper;
+        private readonly IAuctionSystemDbContext _context;
+        private readonly IMapper _mapper;
 
-        public BidHistoryQueryHandler(IAuctionSystemDbContext context, IMapper mapper, IDateTime created)
+        public BidHistoryQueryHandler(IAuctionSystemDbContext context, IMapper mapper)
         {
-            this.context = context;
-            this.created = created;
-            this.mapper = mapper;
+            _context = context;
+            _mapper = mapper;
         }
 
 
@@ -33,13 +31,13 @@ namespace Application.Bids.Queries.BidHistory
             BidHistoryQuery request,
             CancellationToken cancellationToken)
         {
-            var queryable = this.context
+            var queryable = _context
                 .Bids
                 .Where(b => b.ItemId == request.ItemId)
                 .OrderByDescending(b => b.Created)
                 .AsQueryable();
 
-            var totalItemsCount = await this.context.Bids.CountAsync(cancellationToken);
+            var totalItemsCount = await _context.Bids.CountAsync(cancellationToken);
         
 
             totalItemsCount = await queryable.CountAsync(cancellationToken);
@@ -47,7 +45,7 @@ namespace Application.Bids.Queries.BidHistory
                 .ToListAsync(cancellationToken);
 
             var bids = bidList
-                .Select(this.mapper.Map<BidHistoryQueryResponseModel>)
+                .Select(_mapper.Map<BidHistoryQueryResponseModel>)
                 .ToList();
 
             var result = PaginationHelper.CreatePaginatedBidResponse(bids, totalItemsCount);

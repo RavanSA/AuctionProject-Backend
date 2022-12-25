@@ -1,87 +1,31 @@
 ﻿namespace Application.Bids.Commands.CreateBid
 {
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
-    using Common.Exceptions;
     using Common.Interfaces;
     using Domain.Entities;
-    using global::Common;
     using MediatR;
-    using Microsoft.EntityFrameworkCore;
 
     public class CreateBidCommandHandler : IRequestHandler<CreateBidCommand>
     {
-        private readonly IAuctionSystemDbContext context;
-        private readonly ICurrentUserService currentUserService;
-        private readonly IDateTime dateTime;
-        private readonly IMapper mapper;
+        private readonly IAuctionSystemDbContext _context;
+        private readonly IMapper _mapper;
 
-        public CreateBidCommandHandler(IAuctionSystemDbContext context,
-            ICurrentUserService currentUserService,
-            IDateTime dateTime,
-            IMapper mapper)
+        public CreateBidCommandHandler(IAuctionSystemDbContext context, IMapper mapper)
         {
-            this.context = context;
-            this.currentUserService = currentUserService;
-            this.dateTime = dateTime;
-            this.mapper = mapper;
+            _context = context;
+            _mapper = mapper;
         }
 
         public async Task<Unit> Handle(CreateBidCommand request, CancellationToken cancellationToken)
         {
-            //await this.CheckWhetherItemIsEligibleForBidding(request, cancellationToken);
 
-            var bid = this.mapper.Map<Bid>(request);
-            await this.context.Bids.AddAsync(bid, cancellationToken);
-            await this.context.SaveChangesAsync(cancellationToken);
+            var bid = _mapper.Map<Bid>(request);
+            await _context.Bids.AddAsync(bid, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
-        }
-
-        private async Task CheckWhetherItemIsEligibleForBidding(CreateBidCommand request,
-            CancellationToken cancellationToken)
-        {
-            var item = await this.context
-                .Items
-                .Select(i => new
-                {
-                    i.Id,
-                    i.StartingPrice,
-                    i.StartTime,
-                    i.EndTime,
-                    HighestBidAmount = i.Bids
-                        .Select(b => b.Amount)
-                        .OrderByDescending(amount => amount)
-                        .FirstOrDefault()
-                })
-                .Where(i => i.Id == request.ItemId)
-                .SingleOrDefaultAsync(cancellationToken);
-
-
-            if (request.UserId != this.currentUserService.UserId)
-            {
-                throw new NotFoundException(nameof(Item));
-            }
-
-            if (item.StartTime >= this.dateTime.UtcNow)
-            {
-                throw new BadRequestException(
-                    string.Format(ExceptionMessages.Bid.BiddingNotStartedYet, request.ItemId));
-            }
-
-            if (item.EndTime <= this.dateTime.UtcNow)
-            {
-                throw new BadRequestException(
-                    string.Format(ExceptionMessages.Bid.BiddingHasEnded, request.ItemId));
-            }
-
-            if (request.Amount <= item.HighestBidAmount
-                || request.Amount <= item.StartingPrice)
-            {
-                throw new BadRequestException(ExceptionMessages.Bid.InvalidBidAmount);
-            }
         }
     }
 }

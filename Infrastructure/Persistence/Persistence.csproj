@@ -43,7 +43,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Application\Application.csproj" />
-    <ProjectReference Include="..\..\Core\Common\Common.csproj" />
     <ProjectReference Include="..\AuctionSystem.Infrastructure\AuctionSystem.Infrastructure.csproj" />
   </ItemGroup>
 

@@ -4,7 +4,6 @@
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
-    using Common.Exceptions;
     using Common.Interfaces;
     using Domain.Entities;
     using global::Common;

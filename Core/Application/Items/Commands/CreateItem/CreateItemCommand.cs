@@ -30,7 +30,6 @@
         public String UserId { get; set; }
         
 
-        //public ICollection<IFormFile> Pictures { get; set; } = new HashSet<IFormFile>();
 
         public void ConfigureMapping(Profile mapper)
         {

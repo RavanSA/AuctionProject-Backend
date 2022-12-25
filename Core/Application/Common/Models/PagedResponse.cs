@@ -8,7 +8,7 @@
         public PagedResponse()
         {
             this.PageNumber = 1;
-            this.PageSize = AppConstants.PageSize;
+            this.PageSize = 32;
         }
 
         public PagedResponse(IEnumerable<T> data, int totalDataCountInDatabase)

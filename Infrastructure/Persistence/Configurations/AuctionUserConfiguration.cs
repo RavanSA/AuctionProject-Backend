@@ -12,7 +12,7 @@
             builder
                 .Property(p => p.FullName)
                 .IsRequired()
-                .HasMaxLength(ModelConstants.User.FullNameMaxLength);
+                .HasMaxLength(ModelConstants.User.NameMaxLength);
 
             builder
                 .HasMany(b => b.Bids)

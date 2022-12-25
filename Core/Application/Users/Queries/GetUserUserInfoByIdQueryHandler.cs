@@ -4,7 +4,6 @@
     using System.Threading.Tasks;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
-    using Common.Exceptions;
     using Common.Interfaces;
     using Common.Models;
     using Domain.Entities;

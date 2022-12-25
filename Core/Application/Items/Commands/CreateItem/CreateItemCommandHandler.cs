@@ -3,30 +3,21 @@
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
-    using Common.Exceptions;
     using Common.Interfaces;
     using Common.Models;
     using Domain.Entities;
     using MediatR;
-    using Microsoft.EntityFrameworkCore;
-    using Pictures.Commands.CreatePicture;
 
     public class CreateItemCommandHandler : IRequestHandler<CreateItemCommand, Response<ItemResponseModel>>
     {
         private readonly IAuctionSystemDbContext context;
         private readonly IMapper mapper;
-        private readonly IMediator mediator;
-        private readonly ICurrentUserService userService;
 
         public CreateItemCommandHandler(IAuctionSystemDbContext context,
-            IMapper mapper,
-            IMediator mediator,
-            ICurrentUserService userService)
+            IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
-            this.mediator = mediator;
-            this.userService = userService;
         }
 
 
@@ -41,9 +32,6 @@
 
             await this.context.Items.AddAsync(item, cancellationToken);
             await this.context.SaveChangesAsync(cancellationToken);
-
-            //await this.mediator.Send(new CreatePictureCommand { ItemId = item.Id, Pictures = request.Pictures },
-            //    cancellationToken);
 
             return new Response<ItemResponseModel>(new ItemResponseModel(item.Id));
         }

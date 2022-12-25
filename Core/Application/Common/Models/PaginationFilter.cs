@@ -11,13 +11,13 @@
         public PaginationFilter()
         {
             this.PageNumber = DefaultPageNumber;
-            this.PageSize = AppConstants.PageSize;
+            this.PageSize = 32;
         }
 
         public PaginationFilter(int pageNumber, int pageSize)
         {
             this.PageNumber = pageNumber < DefaultPageNumber ? DefaultPageNumber : pageNumber;
-            this.PageSize = pageSize >= AppConstants.PageSize || pageSize < 1 ? AppConstants.PageSize : pageSize;
+            this.PageSize = pageSize >= 32 || pageSize < 1 ? 32 : pageSize;
         }
 
         public int PageNumber { get; set; }
