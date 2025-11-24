@@ -33,13 +33,13 @@
 
         public void ConfigureMapping(Profile mapper)
         {
-            mapper
-                .CreateMap<CreateItemCommand, Item>()
-                .ForMember(dest => dest.StartTime,
-                    opt => opt.MapFrom(src => src.StartTime.ToUniversalTime()))
-                .ForMember(dest => dest.EndTime,
-                    opt => opt.MapFrom(src => src.EndTime.ToUniversalTime()));
+           mapper.CreateMap<CreateItemCommand, Item>()
+            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => Guid.Parse(src.UserId)))
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+            .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime.ToUniversalTime()))
+            .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime.ToUniversalTime()));
                 
-        }
+                }
     }
 }

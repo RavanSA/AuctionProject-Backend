@@ -14,7 +14,7 @@
         {
             services
                 .AddDbContext<AuctionSystemDbContext>(options =>
-                    options.UseSqlServer(configuration.GetDefaultConnectionString()))
+                    options.UseSqlite(configuration.GetDefaultConnectionString()))
                 .AddIdentity<AuctionUser, IdentityRole>(options =>
                 {
                     options.Password.RequireDigit = false;

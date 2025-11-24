@@ -5,8 +5,9 @@
 
     public class CreateItemCommandValidator : AbstractValidator<CreateItemCommand>
     {
-        private readonly IDateTime dateTime;
-
-        public CreateItemCommandValidator(IDateTime dateTime){}
+        public CreateItemCommandValidator(IDateTime dateTime)
+        {
+            // Validator rules can be added here if needed
+        }
     }
 }

@@ -15,7 +15,7 @@
         public TContext CreateDbContext(string[] args)
         {
             var basePath = Directory.GetCurrentDirectory() +
-                           string.Format("{0}../../Presentation{0}Api", Path.DirectorySeparatorChar);
+                           string.Format("{0}../../API{0}Api", Path.DirectorySeparatorChar);
             return this.Create(basePath, Environment.GetEnvironmentVariable(AspNetCoreEnvironment));
         }
 
@@ -50,7 +50,7 @@
 
             var optionsBuilder = new DbContextOptionsBuilder<TContext>();
 
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlite(connectionString);
 
             return this.CreateNewInstance(optionsBuilder.Options);
         }

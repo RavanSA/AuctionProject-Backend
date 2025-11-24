@@ -36,7 +36,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromForm] CreateItemCommand model)
+        public async Task<IActionResult> Post([FromBody] CreateItemCommand model)
         {
             var result = await this.Mediator.Send(model);
             return this.CreatedAtAction(nameof(this.Post), result);

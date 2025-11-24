@@ -59,6 +59,12 @@ namespace Api
             {
                 o.EnableDetailedErrors = true;
             });
+
+            services.AddControllers()
+                .AddJsonOptions(opts =>
+                {
+                    opts.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
