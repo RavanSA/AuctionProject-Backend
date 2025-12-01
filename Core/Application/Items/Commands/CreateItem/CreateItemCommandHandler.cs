@@ -32,7 +32,7 @@
         request.UserId, request.CategoryId, request.SubCategoryId);
 
     // Validate foreign keys before saving
-    var userExists = await context.Users.AnyAsync(x => x.Id.ToString() == request.UserId, cancellationToken);
+    var userExists = await context.Users.AnyAsync(x => x.Id == request.UserId, cancellationToken);
     var categoryExists = await context.Categories.AnyAsync(x => x.Id == request.CategoryId, cancellationToken);
     var subCategoryExists = await context.SubCategories.AnyAsync(x => x.Id == request.SubCategoryId, cancellationToken);
 

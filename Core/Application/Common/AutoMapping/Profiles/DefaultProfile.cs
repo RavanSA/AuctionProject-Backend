@@ -1,61 +1,47 @@
-﻿namespace Common.AutoMapping.Profiles
-{
-    using System;
-    using System.Linq;
-    using AutoMapper;
-    using Interfaces;
+﻿using AutoMapper;
+using Common.AutoMapping.Interfaces;
+using System;
+using System.Linq;
+using System.Reflection;
 
+namespace Common.AutoMapping.Profiles
+{
     public class DefaultProfile : Profile
     {
         public DefaultProfile()
         {
-            this.ConfigureMapping();
+            ConfigureMapping();
         }
 
         private void ConfigureMapping()
         {
-            var allTypes = AppDomain
-                .CurrentDomain
-                .GetAssemblies()
-                .Where(a => a.GetName().FullName.Contains("Application") || a.GetName().FullName.Contains("Api")
-                                                                         || a.GetName().FullName.Contains("MvcWeb"))
-                .SelectMany(a => a.GetTypes())
+            // Sadece APPLICATION katmanındaki mapping class-ları yükle
+            var assembly = Assembly.GetExecutingAssembly();
+
+            var allTypes = assembly
+                .GetTypes()
+                .Where(t => t.IsClass && !t.IsAbstract)
                 .ToArray();
 
-            var withBidirectionalMapping = allTypes
-                .Where(t => t.IsClass
-                            && !t.IsAbstract
-                            && t.GetInterfaces()
-                                .Where(i => i.IsGenericType)
-                                .Select(i => i.GetGenericTypeDefinition())
-                                .Contains(typeof(IMapWith<>)))
-                .SelectMany(t =>
-                    t.GetInterfaces()
-                        .Where(i => i.IsGenericType &&
-                                    i.GetGenericTypeDefinition() == typeof(IMapWith<>))
-                        .SelectMany(i => i.GetGenericArguments())
-                        .Select(s => new
-                        {
-                            Type1 = t,
-                            Type2 = s
-                        })
+            // IMapWith<T> implemente edenler (tek yön — Entity → DTO)
+            var withMappings = allTypes
+                .SelectMany(t => t.GetInterfaces()
+                    .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMapWith<>))
+                    .Select(i => new { DTO = t, Entity = i.GetGenericArguments()[0] })
                 )
                 .ToArray();
 
-            //Create bidirectional mapping for all types implementing the IMapWith<TModel> interface
-            foreach (var mapping in withBidirectionalMapping)
+            foreach (var map in withMappings)
             {
-                this.CreateMap(mapping.Type1, mapping.Type2);
-                this.CreateMap(mapping.Type2, mapping.Type1);
+                // Entity → DTO (default)
+                CreateMap(map.Entity, map.DTO);
             }
 
-            // Create custom mapping for all types implementing the IHaveCustomMapping interface
-            var customMappings = allTypes.Where(t => t.IsClass
-                                                     && !t.IsAbstract
-                                                     && typeof(IHaveCustomMapping).IsAssignableFrom(t))
+            // Custom mappingleri çalıştır
+            var customMappings = allTypes
+                .Where(t => typeof(IHaveCustomMapping).IsAssignableFrom(t))
                 .Select(Activator.CreateInstance)
-                .Cast<IHaveCustomMapping>()
-                .ToArray();
+                .Cast<IHaveCustomMapping>();
 
             foreach (var mapping in customMappings)
             {

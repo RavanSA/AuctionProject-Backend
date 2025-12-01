@@ -4,12 +4,14 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using Application.Items.Queries.List.Extensions;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Common.Helpers;
     using Common.Interfaces;
     using Common.Models;
     using Domain.Entities;
+    using FluentValidation.TestHelper;
     using global::Common;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
@@ -32,23 +34,41 @@
       CancellationToken cancellationToken)
         {
            
+
             var queryable = this.context
                 .Items
-                .OrderByDescending(b => b.Created)
+              //  .OrderByDescending(b => b.Created)
                 .AsQueryable();
+
+
+            queryable = queryable.ApplyFilters(request);
+
+            queryable = queryable.ApplySorting(request);
+
 
             var totalItemsCount = await this.context.Bids.CountAsync(cancellationToken);
 
 
-            totalItemsCount = await queryable.CountAsync(cancellationToken);
-            var bidList = await queryable
+          //  totalItemsCount = await queryable.CountAsync(cancellationToken);
+            //var bidList = await queryable
+            //    .ToListAsync(cancellationToken);
+
+            //var bids = bidList
+            //    .Select(this.mapper.Map<ListItemsResponseModel>)
+            //    .ToList();
+
+            var skip = (request.Page - 1) * request.PageSize;
+
+            var list = await queryable
+                .Skip(skip)
+                .Take(request.PageSize)
                 .ToListAsync(cancellationToken);
 
-            var bids = bidList
+            var items = list
                 .Select(this.mapper.Map<ListItemsResponseModel>)
                 .ToList();
 
-            var result = PaginationHelper.CreatePaginatedBidResponse(bids, totalItemsCount);
+            var result = PaginationHelper.CreatePaginatedBidResponse(items, totalItemsCount);
             return result;
         }
     }

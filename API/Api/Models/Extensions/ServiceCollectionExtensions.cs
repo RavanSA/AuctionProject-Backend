@@ -5,6 +5,7 @@
     using System.IO;
     using System.Reflection;
     using System.Text;
+    using System.Threading.Tasks;
     using Application.AppSettingsModels;
     using Application.Common.Interfaces;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -55,7 +56,37 @@
                     x.RequireHttpsMetadata = false;
                     x.SaveToken = true;
                     x.TokenValidationParameters = tokenValidationParameters;
-                });
+
+
+                    //x.Events = new JwtBearerEvents
+                    //{
+                    //    OnAuthenticationFailed = context =>
+                    //    {
+                    //        Console.WriteLine("JWT AUTH FAILED: " + context.Exception.Message);
+                    //        if (context.Exception.InnerException != null)
+                    //            Console.WriteLine("INNER: " + context.Exception.InnerException.Message);
+
+                    //        return Task.CompletedTask;
+                    //    },
+
+                    //    OnTokenValidated = context =>
+                    //    {
+                    //        Console.WriteLine("JWT VALIDATED SUCCESSFULLY");
+                    //        Console.WriteLine("User: " + context.Principal.Identity?.Name);
+                    //        return Task.CompletedTask;
+                    //    },
+
+                    //    OnChallenge = context =>
+                    //    {
+                    //        Console.WriteLine("JWT CHALLENGE TRIGGERED — returning 401");
+                    //        Console.WriteLine("ERROR: " + context.Error);
+                    //        Console.WriteLine("DESCRIPTION: " + context.ErrorDescription);
+                    //        return Task.CompletedTask;
+                    //    }
+                    //};
+
+
+                    });
 
             return services;
         }

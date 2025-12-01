@@ -41,7 +41,8 @@
             return new PagedResponse<T>
             {
                 Data = response,
-                TotalDataCount = totalDataCountInDatabase
+                TotalDataCount = totalDataCountInDatabase,
+                Succeeded=response!=null?true:false
             };
         }
 

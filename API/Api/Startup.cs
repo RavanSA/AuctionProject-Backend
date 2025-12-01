@@ -5,15 +5,16 @@ namespace Api
     using Application.Users.Commands.CreateUser;
     using AuctionSystem.Infrastructure;
     using Extensions;
-    using FluentValidation.AspNetCore;
-    using Microsoft.AspNetCore.Builder;
+     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
     using Persistence;
+    using System;
 
     public class Startup
     {
@@ -30,6 +31,7 @@ namespace Api
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             services
                 .AddPersistence(this.Configuration)
@@ -46,15 +48,14 @@ namespace Api
                             builder.WithOrigins("http://localhost:3000",
                                 "https://localhost:3000");
                             builder.SetIsOriginAllowed((hosts) => true);
-                    builder.AllowCredentials();
+                            builder.AllowCredentials();
                             builder.AllowAnyMethod();
                             builder.AllowAnyHeader();
                         });
                 })
                 .AddControllers()
                 .AddNewtonsoftJson(options => options.UseCamelCasing(true))
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>());
-
+;
             services.AddSignalR(o =>
             {
                 o.EnableDetailedErrors = true;
@@ -67,23 +68,44 @@ namespace Api
                 });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration config)
         {
+            var autoMigSetting = config["auto-mig"];
+            bool autoMig = false;
+
+            if (!string.IsNullOrEmpty(autoMigSetting))
+                bool.TryParse(autoMigSetting, out autoMig);
+
+            if (autoMig)
+            {
+                using (var scope = app.ApplicationServices.CreateScope())
+                {
+                    var dbContext = scope.ServiceProvider.GetRequiredService<AuctionSystemDbContext>();
+                    dbContext.Database.Migrate();
+                }
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+
+            
             app
-                .UseDeveloperExceptionPage()
-                .UseHttpsRedirection()
+                //.UseHttpsRedirection()
                 .UseRouting()
-                .UseHsts()
+              //  .UseHsts()
                 .UseCors()
+                .UseMiddleware<ExceptionMiddleware>()
                 .UseAuthentication()
                 .UseAuthorization()
-                .UseSwaggerUi()
-                .UseEndpoints(endpoints =>
+.UseSwagger()
+            .UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Auction API v1");
+                c.RoutePrefix = "swagger";
+            })              .UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
                     endpoints.MapHub<MessageHub>("/chathub");

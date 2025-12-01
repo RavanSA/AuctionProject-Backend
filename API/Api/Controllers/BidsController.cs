@@ -2,13 +2,17 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Application.Bids.Commands.CreateBid;
+     using Application.Bids.Commands.CreateBid;
     using Application.Bids.Queries.Details;
+    using Application.Bids.Queries.LoggedUserBids;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+
 
     public class BidsController : BaseController
     {
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Post([FromBody] CreateBidCommand model)
         {
             await this.Mediator.Send(model);
@@ -29,6 +33,15 @@
         public async Task<IActionResult> BidHistory(Guid itemId)
         {
             var result = await this.Mediator.Send(new BidHistoryQuery(itemId));
+            return this.Ok(result);
+        }
+
+        [HttpGet]
+        [Route("getuserbids")]
+        [Authorize]
+        public async Task<IActionResult> GetUserBids()
+        {
+            var result = await this.Mediator.Send(new LoggedUserBidsQuery());
             return this.Ok(result);
         }
     }

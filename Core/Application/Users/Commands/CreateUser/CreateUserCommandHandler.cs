@@ -20,6 +20,7 @@
             if (!result.Succeeded)
             {
                 //TODO throw exception;
+                throw new System.Exception(result.Error);
             }
 
             return Unit.Value;

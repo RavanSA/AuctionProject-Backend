@@ -8,10 +8,10 @@
     using MediatR;
     using Microsoft.AspNetCore.Http;
 
-    public class CreatePictureCommand : IRequest, IMapWith<Picture>
+    public class CreatePictureCommand : IRequest<Result>, IMapWith<Picture>
     {
         public Guid ItemId { get; set; }
 
-        public ICollection<String> Pictures { get; set; } = new HashSet<String>();
+        public List<string> Pictures { get; set; } 
     }
 }

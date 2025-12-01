@@ -2,11 +2,13 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Application.Items.Commands.CreateItem;
+     using Application.Items.Commands.CreateItem;
     using Application.Items.Commands.UpdateItem;
     using Application.Items.Queries.Details;
     using Application.Items.Queries.List;
+    using Application.Items.Queries.LoggedUserItems;
     using AutoMapper;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
  
     public class ItemsController : BaseController
@@ -21,9 +23,9 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] ListItemsQuery req)
         {
-            var result = await this.Mediator.Send(new ListItemsQuery());
+            var result = await this.Mediator.Send(req);
             return this.Ok(result);
         }
 
@@ -32,6 +34,13 @@
         public async Task<IActionResult> Get(Guid id)
         {
             var result = await this.Mediator.Send(new GetItemDetailsQuery(id));
+            return this.Ok(result);
+        }
+
+        [HttpGet("GetLoggedUserItems"),Authorize]
+        public async Task<IActionResult> Get([FromQuery] LoggedUserItemsQuery req)
+        {
+            var result = await this.Mediator.Send(req);
             return this.Ok(result);
         }
 

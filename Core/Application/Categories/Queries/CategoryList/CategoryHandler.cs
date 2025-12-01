@@ -1,5 +1,6 @@
 ﻿namespace Application.Categories.Queries.CategoryList
 {
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
@@ -26,7 +27,13 @@
         {
             var categories = await _context
                 .Categories
-                .ProjectTo<CategoryResponseModel>(_mapper.ConfigurationProvider)
+                    .Select(x => new CategoryResponseModel
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Description = x.Description,
+                        CategoryImage = x.CategoryImage
+                    })
                 .ToListAsync(cancellationToken);
 
             return new MultiResponse<CategoryResponseModel>(categories);

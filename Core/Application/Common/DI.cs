@@ -11,8 +11,11 @@
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services
-                .AddAutoMapper(typeof(DefaultProfile));
+           services.AddAutoMapper(cfg =>
+            {
+                 cfg.ShouldMapMethod = mi => false;
+                cfg.ShouldUseConstructor = ci => false;
+            }, typeof(DefaultProfile).Assembly);
             services
                 .AddMediatR(Assembly.GetExecutingAssembly());
             return services;

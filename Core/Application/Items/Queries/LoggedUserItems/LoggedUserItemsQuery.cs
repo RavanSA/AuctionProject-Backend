@@ -1,10 +1,12 @@
-﻿namespace Application.Items.Queries.List
-{
-    using Common.Models;
-    using MediatR;
-    using System;
+﻿using Application.Common.Models;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-    public class ListItemsQuery : IRequest<PagedResponse<ListItemsResponseModel>>
+namespace Application.Items.Queries.LoggedUserItems
+{
+    public class LoggedUserItemsQuery : IRequest<PagedResponse<LoggedUserItemsResponseModel>>
     {
         public string? Search { get; set; }
         public Guid? CategoryId { get; set; }
@@ -18,4 +20,5 @@
         public int Page { get; set; } = 1;
         public int PageSize { get; set; } = 20;
     }
+
 }

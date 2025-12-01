@@ -14,7 +14,8 @@
         {
             services
                 .AddDbContext<AuctionSystemDbContext>(options =>
-                    options.UseSqlite(configuration.GetDefaultConnectionString()))
+                    options.UseNpgsql(configuration.GetDefaultConnectionString(),
+                    npgsqlOptions => npgsqlOptions.MigrationsAssembly("Api") ))
                 .AddIdentity<AuctionUser, IdentityRole>(options =>
                 {
                     options.Password.RequireDigit = false;

@@ -1,5 +1,6 @@
 ﻿namespace Application.Pictures.Queries
 {
+    using System.IO;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -27,13 +28,26 @@
         {
                             
 
-            var picture = await _context
+            var pictures = await _context
                 .Pictures
                 .Where(p => p.ItemId == request.Id)
                 .ProjectTo<PictureDetailsResponseModel>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
-            return new MultiResponse<PictureDetailsResponseModel>(picture);
+            foreach( var picture in pictures)
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(picture.Url))
+                    {
+                        picture.Content = await File.ReadAllBytesAsync(picture.Url);
+                    }
+                }
+                catch { }
+            }
+
+
+            return new MultiResponse<PictureDetailsResponseModel>(pictures);
         }
     }
 }

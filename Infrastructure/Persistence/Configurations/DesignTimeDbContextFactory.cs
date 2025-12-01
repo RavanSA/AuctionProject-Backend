@@ -50,7 +50,7 @@
 
             var optionsBuilder = new DbContextOptionsBuilder<TContext>();
 
-            optionsBuilder.UseSqlite(connectionString);
+            optionsBuilder.UseNpgsql(connectionString);
 
             return this.CreateNewInstance(optionsBuilder.Options);
         }
