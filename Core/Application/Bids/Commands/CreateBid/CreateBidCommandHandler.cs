@@ -46,8 +46,14 @@
                 return Result.Failure("The lowest bidder cannot bid again ");
 
 
-            var bid = _mapper.Map<Bid>(request);
-            await _context.Bids.AddAsync(bid, cancellationToken);
+ 
+            var newBid = new Bid()
+            {
+                Amount = request.Amount,
+                UserId = request.UserId,
+                ItemId = request.ItemId,
+            };
+            await _context.Bids.AddAsync(newBid, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
             return Result.Success();

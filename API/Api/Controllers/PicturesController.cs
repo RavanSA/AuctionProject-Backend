@@ -9,10 +9,10 @@
     public class PicturesController : BaseController
     {
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        [HttpGet("{itemId}")]
+        public async Task<IActionResult> Get(Guid itemId)
         {
-            var result = await this.Mediator.Send(new PictureDetailsQuery(id));
+            var result = await this.Mediator.Send(new PictureDetailsQuery(itemId));
             return this.Ok(result);
         }
 
