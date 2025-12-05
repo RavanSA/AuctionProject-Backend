@@ -15,8 +15,8 @@
         [Authorize]
         public async Task<IActionResult> Post([FromBody] CreateBidCommand model)
         {
-            await this.Mediator.Send(model);
-            return this.NoContent();
+           var res= await this.Mediator.Send(model);
+            return Ok(res);
         }
 
         [HttpGet]
