@@ -18,7 +18,7 @@
         public string Address { get; set; } = "";
 
         public string PostCode { get; set; } = "";
-
+        public string FirebaseToken { get; set; }
         public string ProfilePicture { get; set; } = "";
 
         public ICollection<Item> ItemsSold { get; set; } = new HashSet<Item>();

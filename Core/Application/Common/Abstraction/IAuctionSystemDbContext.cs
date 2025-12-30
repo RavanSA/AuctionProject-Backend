@@ -22,6 +22,7 @@
         DbSet<Messages> Messages { get; set; }
 
         DbSet<RefreshToken> RefreshTokens { get; set; }
+        DbSet<Notification> Notifications{ get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

@@ -10,13 +10,13 @@
     using MediatR;
     using Microsoft.EntityFrameworkCore;
 
-    public class GetUserUserInfoByIdQueryHandler : IRequestHandler<GetUserInfoById, Response<GetUserUserInfoByIdQueryResponseModel>>
+    public class GetUserInfoByIdQueryHandler : IRequestHandler<GetUserInfoById, Response<GetUserUserInfoByIdQueryResponseModel>>
     {
         private readonly IAuctionSystemDbContext context;
         private readonly IMapper mapper;
 
 
-        public GetUserUserInfoByIdQueryHandler(IAuctionSystemDbContext context, IMapper mapper)
+        public GetUserInfoByIdQueryHandler(IAuctionSystemDbContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;

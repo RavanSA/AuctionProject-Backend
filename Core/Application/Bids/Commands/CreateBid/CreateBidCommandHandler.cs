@@ -29,6 +29,24 @@
         {
 
             /*
+             * item yarranmamisdam 24 saat erzinde
+             */
+
+            int dayCheck = 24;//databaseden oxunulacaq sonra
+            var getItem=await _context.Items.Where(x=>x.Id==request.ItemId).FirstOrDefaultAsync();
+
+            if (getItem is not null)
+            {
+                if (DateTime.Now - getItem.StartTime < TimeSpan.FromHours(dayCheck))
+                {
+                    return Result.Failure($"Cannot create bid in {dayCheck} hour after creating item ");
+                }
+               
+
+            }
+
+
+            /*
              * son 10 dq 
              */
             var getBids=await _context.Bids.Where(x=>x.ItemId==request.ItemId).OrderByDescending(x=>x.Created).FirstOrDefaultAsync();
@@ -65,6 +83,8 @@
                 Amount = request.Amount,
                 UserId = request.UserId,
                 ItemId = request.ItemId,
+                Latitude= request.Latitude,
+                Longitude= request.Longitude
             };
             await _context.Bids.AddAsync(newBid, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);

@@ -34,12 +34,10 @@
                 .IsRequired();
 
             builder
-                .Property(p => p.StartTime)
-                .IsRequired();
+                .Property(p => p.StartTime);
 
             builder
-                .Property(p => p.EndTime)
-                .IsRequired();
+                .Property(p => p.EndTime);
 
             builder
                 .Property(p => p.IsEmailSent)

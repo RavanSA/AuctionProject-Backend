@@ -16,7 +16,7 @@
 
         public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var result = await _userManager.CreateUserAsync(request.Email, request.Password, request.FullName);
+            var result = await _userManager.CreateUserAsync(request.Email, request.Password, request.FullName,request.PhoneNo);
             if (!result.Succeeded)
             {
                 //TODO throw exception;

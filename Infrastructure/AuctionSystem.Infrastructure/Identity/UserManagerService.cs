@@ -48,18 +48,19 @@
             return user;
         }
 
-        public async Task<Result> CreateUserAsync(string email, string password, string fullName)
+        public async Task<Result> CreateUserAsync(string email, string password, string fullName,string phone)
         {
             var user = new AuctionUser
             {
                 UserName = email,
                 Email = email,
-                FullName = fullName
+                FullName = fullName,
+                PhoneNumber=phone
             };
 
             var result = await _userManager.CreateAsync(user, password);
             return result.ToApplicationResult();
-        }
+        }   
 
         public async Task<Result> CreateUserAsync(AuctionUser user, string password)
         {

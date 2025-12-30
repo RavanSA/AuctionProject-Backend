@@ -48,8 +48,11 @@
     try
     {
         var item = mapper.Map<Item>(request);
-        item.StartTime = item.StartTime.ToUniversalTime();
-        item.EndTime = item.EndTime.ToUniversalTime();
+        if(item.StartTime!=null)
+            item.StartTime =((DateTime)item.StartTime).ToUniversalTime();
+
+        if (item.EndTime != null)
+            item.EndTime = ((DateTime)item.EndTime).ToUniversalTime();
 
         logger.LogInformation("Mapped Item ready for insert: {@Item}", item);
 

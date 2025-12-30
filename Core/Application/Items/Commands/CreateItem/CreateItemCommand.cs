@@ -26,7 +26,8 @@
         public Guid SubCategoryId { get; set; }
 
         public Guid CategoryId { get; set; }
-
+        public int LatX { get; set; }
+        public int LatY { get; set; }
         public String UserId { get; set; }
         
 

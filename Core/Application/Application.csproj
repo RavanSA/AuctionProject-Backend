@@ -8,6 +8,8 @@
     <Compile Remove="Common\Abstraction\IResponseCacheService.cs" />
     <PackageReference Include="AutoMapper" Version="15.1.0" />
     <PackageReference Include="CloudinaryDotNet" Version="1.10.0" />
+    <PackageReference Include="FirebaseAdmin" Version="3.4.0" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.73.0" />
     <PackageReference Include="MailKit" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.11" />

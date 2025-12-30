@@ -28,6 +28,7 @@
             var bid = await _context
                 .Bids
                 .Where(b => b.ItemId == request.ItemId)
+                .OrderByDescending(x=>x.Amount)
                 .ProjectTo<HighestBidDetailsResponseModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(cancellationToken);
 

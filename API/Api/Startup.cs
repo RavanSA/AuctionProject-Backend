@@ -1,11 +1,18 @@
 namespace Api
 {
     using Api.Hubss;
+    using Api.Jobs;
     using Application;
+    using Application.Common.Abstraction;
+    using Application.Common.Concrete;
     using Application.Users.Commands.CreateUser;
     using AuctionSystem.Infrastructure;
     using Extensions;
-     using Microsoft.AspNetCore.Builder;
+    using FirebaseAdmin;
+    using Google.Apis.Auth.OAuth2;
+    using Hangfire;
+    using Hangfire.MemoryStorage;
+    using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -55,7 +62,19 @@ namespace Api
                 })
                 .AddControllers()
                 .AddNewtonsoftJson(options => options.UseCamelCasing(true))
-;
+; services.AddHangfire(config =>
+{
+    config.UseMemoryStorage();
+});
+
+            services.AddHangfireServer();
+
+            services.AddScoped<IFcmPushService, FcmPushService>();
+
+            services.AddScoped<RecurringQueue>();
+
+
+    
             services.AddSignalR(o =>
             {
                 o.EnableDetailedErrors = true;
@@ -66,6 +85,15 @@ namespace Api
                 {
                     opts.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                 });
+
+         
+
+            FirebaseApp.Create(new AppOptions
+            {
+                Credential = GoogleCredential.FromFile(Configuration.GetValue<string>("Firebase:ServiceAccountPath"))
+            });
+
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration config)
@@ -89,9 +117,16 @@ namespace Api
             {
                 app.UseDeveloperExceptionPage();
             }
+ 
+             using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var scheduler = scope.ServiceProvider
+                    .GetRequiredService<RecurringQueue>();
+
+                scheduler.ScheduleJobs();
+            }
 
 
-            
             app
                 //.UseHttpsRedirection()
                 .UseRouting()
@@ -100,7 +135,7 @@ namespace Api
                 .UseMiddleware<ExceptionMiddleware>()
                 .UseAuthentication()
                 .UseAuthorization()
-.UseSwagger()
+                .UseSwagger()
             .UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Auction API v1");
@@ -110,9 +145,21 @@ namespace Api
                     endpoints.MapControllers();
                     endpoints.MapHub<MessageHub>("/chathub");
 
-                });
+                }).UseHangfireDashboard("/hangfire", new DashboardOptions
+                {
+                    Authorization = new[] { new HangfireAllowAll() }
+                }); ;
 
            
         }
+    }
+}
+
+
+public class HangfireAllowAll : Hangfire.Dashboard.IDashboardAuthorizationFilter
+{
+    public bool Authorize(Hangfire.Dashboard.DashboardContext context)
+    {
+        return true;  
     }
 }

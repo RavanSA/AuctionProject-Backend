@@ -14,5 +14,7 @@
         public Guid? ItemId { get; set; }
 
         public Item Item { get; set; }
+        public decimal? Latitude { get; set; }
+        public decimal? Longitude { get; set; }
     }
 }

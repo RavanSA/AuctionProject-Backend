@@ -2,7 +2,7 @@ namespace Api
 {
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Hosting;
-
+    //dotnet ef migrations add changes-entity --project ../Infrastructure/Persistence --startup-project API
     public class Program
     {
         public static void Main(string[] args)

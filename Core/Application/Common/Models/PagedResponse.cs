@@ -5,11 +5,7 @@
 
     public class PagedResponse<T>
     {
-        public PagedResponse()
-        {
-            this.PageNumber = 1;
-            this.PageSize = 32;
-        }
+        
 
         public PagedResponse(IEnumerable<T> data, int totalDataCountInDatabase)
         {
@@ -27,7 +23,10 @@
             ErrorMessage= Error;
         }
 
-
+        public PagedResponse()
+        {
+            
+        }
         public static PagedResponse<T> Failure(string error)
     => new PagedResponse<T>(error);
 

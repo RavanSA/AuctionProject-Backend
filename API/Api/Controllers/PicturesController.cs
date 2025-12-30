@@ -18,6 +18,7 @@
 
 
         [HttpPost]
+
         public async Task<IActionResult> Post([FromBody] CreatePictureCommand model)
         {
             var result = await this.Mediator.Send(model);

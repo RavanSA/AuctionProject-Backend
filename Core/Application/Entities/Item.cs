@@ -11,30 +11,42 @@
         public string Description { get; set; }
         public decimal StartingPrice { get; set; }
         public decimal MinIncrease { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime? StartTime { get; set; }
+        public DateTime? EndTime { get; set; }
         public bool IsEmailSent { get; set; } = false;
 
         public string UserId { get; set; }
-        
+
         public AuctionUser User { get; set; }
 
         public Guid SubCategoryId { get; set; }
-        
+
         public SubCategory SubCategory { get; set; }
 
         public Guid CategoryId { get; set; }
 
         public Category Category { get; set; }
-
+        public decimal? Latitude { get; set; }
+        public decimal? Longitude { get; set; }
+        public ItemStatus Status { get; set; }
         public string MainItemPicture { get; set; } = "";
 
         public ICollection<Bid> Bids { get; set; } = new HashSet<Bid>();
-        
+
         public ICollection<Messages> Messages { get; set; } = new HashSet<Messages>();
-        
+
         //public ICollection<Picture> Pictures { get; set; } = new HashSet<Picture>();
 
 
+    }
+
+    //joblar qurulacaq. eger create statusunda var ve starttime kecibse status start olacaq.
+    public enum ItemStatus
+    {
+        Create = 0,
+        Start = 1,
+        Continue = 2,
+        Stop = 3,
+        End = 4
     }
 }

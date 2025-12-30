@@ -34,6 +34,7 @@
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<Messages> Messages { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

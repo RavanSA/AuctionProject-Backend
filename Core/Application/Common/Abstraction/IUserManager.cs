@@ -8,7 +8,7 @@
     {
         Task<User> GetUserByIdAsync(string id);
 
-        Task<Result> CreateUserAsync(string email, string password, string fullName);
+        Task<Result> CreateUserAsync(string email, string password, string fullName,string phoneNo);
 
         Task<Result> CreateUserAsync(AuctionUser user, string password);
 

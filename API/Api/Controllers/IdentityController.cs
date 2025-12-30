@@ -3,12 +3,15 @@
     using System;
     using System.Threading.Tasks;
     using Application.Items.Queries.Details;
+    using Application.Notification.Command;
+    using Application.Notification.Queries;
     using Application.Users.Commands.CreateUser;
     using Application.Users.Commands.Jwt.Refresh;
     using Application.Users.Commands.LoginUser;
     using Application.Users.Commands.Logout;
     using Application.Users.Commands.UpdateUserInfo;
     using global::Common;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
@@ -71,14 +74,37 @@
         public async Task<IActionResult> Put([FromBody] UpdateUserInfoCommand model)
         {
 
-            await this.Mediator.Send(model);
-            return this.NoContent();
+           var res= await this.Mediator.Send(model);
+            return Ok(res);
         }
+
+
+        [HttpPost("FirebaseToken")]
+        [Authorize]
+        public async Task<IActionResult> FirebaseToken([FromBody] FirebaseNotificationCommand model)
+        {
+
+            var res= await this.Mediator.Send(model);
+            return Ok(res);
+        }
+
+
+        [HttpPost("LoggedUserNotifications")]
+        [Authorize]
+        public async Task<IActionResult> LoggedUserNotifications([FromQuery] GetUserNotificationQuery model)
+        {
+
+            var res = await this.Mediator.Send(model);
+            return Ok(res);
+        }
+
+
 
         [HttpPost]
         [Route(nameof(Logout))]
         public async Task<IActionResult> Logout()
         {
+
             this.Request.Cookies.TryGetValue(Constants.RefreshToken, out var refreshToken);
             this.Response.Cookies.Delete(Constants.JwtToken);
             this.Response.Cookies.Delete(Constants.RefreshToken);
@@ -116,6 +142,8 @@
 
             this.Response.Cookies.Append(Constants.JwtToken, token, cookieOptions);
         }
+
+
 
     }
 }

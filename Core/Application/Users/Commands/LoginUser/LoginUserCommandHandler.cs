@@ -24,7 +24,8 @@
 
             var (result, userId) = await _userManager.SignIn(request.Email, request.Password);
 
-   
+            if (!result.Succeeded) throw new System.Exception("User Not Found");
+
             var model = await _mediator
                 .Send(new GenerateJwtTokenCommand(userId, request.Email), cancellationToken);
             return new Response<AuthSuccessResponse>(model);
