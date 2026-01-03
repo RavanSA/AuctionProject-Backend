@@ -22,7 +22,8 @@ public enum NotificationType
 {
     ItemStart = 0,
     NewBid = 1,
-    BidEnd = 2
+    BidEnd = 2,
+    Generic=3
 }
 
 public enum Status

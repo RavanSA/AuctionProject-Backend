@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Notification.Queries;
+namespace Application.Notification.Queries.GetUserNotification;
 public class GetUserNotificationQuery : IRequest<PagedResponse<GetUserNotificationQueryResponse>>
 {
-    public string? SortBy { get; set; }
+    public string SortBy { get; set; }
     public bool SortDesc { get; set; } = false;
 
     public int Page { get; set; } = 1;

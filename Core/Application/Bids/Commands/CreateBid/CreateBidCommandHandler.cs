@@ -28,6 +28,10 @@
         public async Task<Result> Handle(CreateBidCommand request, CancellationToken cancellationToken)
         {
 
+
+   
+
+
             /*
              * item yarranmamisdam 24 saat erzinde
              */
@@ -41,10 +45,15 @@
                 {
                     return Result.Failure($"Cannot create bid in {dayCheck} hour after creating item ");
                 }
-               
+
+                if (getItem.Status != ItemStatus.Continue)
+                {
+                    return Result.Failure("Cannot create bid for non-continue item");
+                }
 
             }
 
+            
 
             /*
              * son 10 dq 

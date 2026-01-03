@@ -11,8 +11,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Notification.Command;
-internal class FirebaseNotificationCommandHandler : IRequestHandler<FirebaseNotificationCommand, Result>
+namespace Application.Notification.Command.FirebaseNotification;
+public class FirebaseNotificationCommandHandler : IRequestHandler<FirebaseNotificationCommand, Result>
 {
     private readonly IAuctionSystemDbContext _context;
     private readonly ICurrentUserService _currentUserService;
@@ -26,13 +26,13 @@ internal class FirebaseNotificationCommandHandler : IRequestHandler<FirebaseNoti
 
     public async Task<Result> Handle(FirebaseNotificationCommand request, CancellationToken cancellationToken)
     {
-        var getUser =await _context.Users.FirstOrDefaultAsync(x=>x.Id==_currentUserService.UserId);
+        var getUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == _currentUserService.UserId);
         if (getUser is null) return Result.Failure("User not found");
 
         getUser.FirebaseToken = request.FirebaseToken;
         _context.Users.Update(getUser);
 
         _logger.LogInformation("Firebase token updated for user", getUser.Id);
-        return Result.Success();    
+        return Result.Success();
     }
 }

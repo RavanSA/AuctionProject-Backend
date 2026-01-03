@@ -3,8 +3,9 @@
     using System;
     using System.Threading.Tasks;
     using Application.Items.Queries.Details;
-    using Application.Notification.Command;
-    using Application.Notification.Queries;
+    using Application.Notification.Command.FirebaseNotification;
+    using Application.Notification.Command.SendNotification;
+    using Application.Notification.Queries.GetUserNotification;
     using Application.Users.Commands.CreateUser;
     using Application.Users.Commands.Jwt.Refresh;
     using Application.Users.Commands.LoginUser;
@@ -99,6 +100,13 @@
         }
 
 
+        [HttpPost("SendNotificationTest")]
+        [Authorize]
+        public async Task<IActionResult> Post([FromBody] SendNotificationCommand model)
+        {
+            var result = await this.Mediator.Send(model);
+            return this.CreatedAtAction(nameof(this.Post), result);
+        }
 
         [HttpPost]
         [Route(nameof(Logout))]

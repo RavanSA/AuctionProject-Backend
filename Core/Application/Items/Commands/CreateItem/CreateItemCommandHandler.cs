@@ -27,8 +27,20 @@
             this.logger = logger;
         }
         public async Task<Response<ItemResponseModel>> Handle(CreateItemCommand request, CancellationToken cancellationToken)
-{
-    logger.LogInformation("Starting CreateItemCommand for UserId={UserId}, CategoryId={CategoryId}, SubCategoryId={SubCategoryId}",
+        {
+            if (request.StartTime == null || request.StartTime <=DateTime.Now)
+            {
+                logger.LogWarning("Invalid time range: StartTime {StartTime} is not before now", request.StartTime);
+                return new Response<ItemResponseModel>("StartTime must be bigger than now.");
+            }
+
+            if (request.EndTime == null || request.EndTime <= request.StartTime)
+            {
+                logger.LogWarning("Invalid time range: EndTime {EndTime} is not after StartTime", request.EndTime,request.StartTime);
+                return new Response<ItemResponseModel>("EndTime must be later than StartTime.");
+            }
+
+            logger.LogInformation("Starting CreateItemCommand for UserId={UserId}, CategoryId={CategoryId}, SubCategoryId={SubCategoryId}",
         request.UserId, request.CategoryId, request.SubCategoryId);
 
     // Validate foreign keys before saving

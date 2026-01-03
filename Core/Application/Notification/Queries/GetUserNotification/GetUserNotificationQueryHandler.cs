@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Notification.Queries;
+namespace Application.Notification.Queries.GetUserNotification;
 public class GetUserNotificationQueryHandler : IRequestHandler<GetUserNotificationQuery, PagedResponse<GetUserNotificationQueryResponse>>
 {
     private readonly IAuctionSystemDbContext _context;
@@ -39,7 +39,7 @@ public class GetUserNotificationQueryHandler : IRequestHandler<GetUserNotificati
 
         var queryable = _context.Notifications.AsNoTracking().Where(x => x.UserId == getUser.Id);
 
- 
+
 
         var totalItemsCount = await queryable.CountAsync(cancellationToken);
 
@@ -58,6 +58,6 @@ public class GetUserNotificationQueryHandler : IRequestHandler<GetUserNotificati
 
         var result = PaginationHelper.CreatePaginatedBidResponse(notification, totalItemsCount);
 
-        return  result;
+        return result;
     }
 }

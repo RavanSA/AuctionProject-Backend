@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
- 
 
-namespace Application.Notification.Command;
+
+namespace Application.Notification.Command.FirebaseNotification;
 public class FirebaseNotificationCommand : IRequest<Result>, IMapWith<Domain.Entities.Notification>
 {
     public string FirebaseToken { get; set; }

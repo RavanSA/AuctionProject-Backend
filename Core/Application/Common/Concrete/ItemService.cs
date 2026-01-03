@@ -67,20 +67,27 @@ public class ItemService : IItemService
 
                 if (token != null)
                 {
-                    await _fcmPushService.SendAsync(
-                        token,
-                        new PushMessage
-                        {
-                            Title = newNotification.Title,
-                            Body = newNotification.Description,
-                            Data = new Dictionary<string, string>
+                    try
+                    {
+                        await _fcmPushService.SendAsync(
+                            token,
+                            new PushMessage
                             {
-                                ["itemId"] = item.Id.ToString(),
-                                ["type"] = "ITEM_STARTED"
-                            }
-                        });
-                    _logger.LogInformation("Push notification sent for ItemId: {ItemId} to UserId: {UserId}", item.Id, item.UserId);
-                }
+                                Title = newNotification.Title,
+                                Body = newNotification.Description,
+                                Data = new Dictionary<string, string>
+                                {
+                                    ["itemId"] = item.Id.ToString(),
+                                    ["type"] = "ITEM_STARTED"
+                                }
+                            });
+                        _logger.LogInformation("Push notification sent for ItemId: {ItemId} to UserId: {UserId}", item.Id, item.UserId);
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.LogError(e, "Error sending push notification for ItemId: {ItemId} to UserId: {UserId}", item.Id, item.UserId);
+                    }
+                    }
                 else
                 {
                     _logger.LogWarning("No Firebase token found for UserId: {UserId} (ItemId: {ItemId})", item.UserId, item.Id);
@@ -132,18 +139,25 @@ public class ItemService : IItemService
                         UserId = item.UserId
                     };
 
-                    await _fcmPushService.SendAsync(
-                        getWinner,
-                        new PushMessage
-                        {
-                            Title = newNotification.Title,
-                            Body = newNotification.Description,
-                            Data = new Dictionary<string, string>
+                    try
+                    {
+                        await _fcmPushService.SendAsync(
+                            getWinner,
+                            new PushMessage
                             {
-                                ["itemId"] = item.Id.ToString(),
-                                ["type"] = "ITEM_WON"
-                            }
-                        });
+                                Title = newNotification.Title,
+                                Body = newNotification.Description,
+                                Data = new Dictionary<string, string>
+                                {
+                                    ["itemId"] = item.Id.ToString(),
+                                    ["type"] = "ITEM_WON"
+                                }
+                            });
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.LogError(e, "Error sending winner notification for ItemId: {ItemId} to UserId: {UserId}", item.Id, item.UserId);
+                    }
                     _logger.LogInformation("Winner notification sent for ItemId: {ItemId} to UserId: {UserId}", item.Id, item.UserId);
                 }
                 else
@@ -195,18 +209,24 @@ public class ItemService : IItemService
                     UserId = item.UserId
                 };
 
-                await _fcmPushService.SendBatchAsync(
-                    tokens,
-                    new PushMessage
-                    {
-                        Title = newNotification.Title,
-                        Body = newNotification.Description,
-                        Data = new Dictionary<string, string>
+                try
+                {
+                    await _fcmPushService.SendBatchAsync(
+                        tokens,
+                        new PushMessage
                         {
-                            ["itemId"] = item.Id.ToString(),
-                            ["type"] = "ITEM_ENDING_SOON"
-                        }
-                    });
+                            Title = newNotification.Title,
+                            Body = newNotification.Description,
+                            Data = new Dictionary<string, string>
+                            {
+                                ["itemId"] = item.Id.ToString(),
+                                ["type"] = "ITEM_ENDING_SOON"
+                            }
+                        });
+                }catch(Exception e)
+                {
+                    _logger.LogError(e, "Error sending batch notification for ItemId: {ItemId}", item.Id);
+                }
                 _logger.LogInformation("Batch notification sent for ItemId: {ItemId} to {TokenCount} users", item.Id, tokens.Count);
             }
             catch (Exception e)

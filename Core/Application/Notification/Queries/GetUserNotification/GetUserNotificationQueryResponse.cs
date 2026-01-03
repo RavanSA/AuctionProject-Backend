@@ -7,8 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Notification.Queries;
-public   class GetUserNotificationQueryResponse : IMapWith<Domain.Entities.Notification>
+namespace Application.Notification.Queries.GetUserNotification;
+public class GetUserNotificationQueryResponse : IMapWith<Domain.Entities.Notification>
 {
     public Guid Id { get; set; }
     public NotificationType Type { get; set; }
