@@ -32,8 +32,7 @@ public sealed class FcmPushService : IFcmPushService
             .SendAsync(msg);
     }
 
-    // 2️⃣ Aynı mesaj – çok token (BEST PRACTICE)
-    public async Task<PushSendResult> SendBatchAsync(
+     public async Task<PushSendResult> SendBatchAsync(
         IReadOnlyCollection<string> tokens,
         PushMessage message)
     {

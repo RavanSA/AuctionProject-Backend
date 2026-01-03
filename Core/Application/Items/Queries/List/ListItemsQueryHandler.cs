@@ -45,6 +45,10 @@
 
             queryable = queryable.ApplySorting(request);
 
+            if (request.Status != null)
+                queryable = queryable.Where(i => i.Status == request.Status);
+           else
+                queryable=queryable.Where(i => i.Status == ItemStatus.Continue);
 
             var totalItemsCount = await this.context.Bids.CountAsync(cancellationToken);
 

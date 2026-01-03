@@ -25,7 +25,8 @@
 
         public PagedResponse()
         {
-            
+            this.PageNumber = 1;
+            this.PageSize = 32;
         }
         public static PagedResponse<T> Failure(string error)
     => new PagedResponse<T>(error);

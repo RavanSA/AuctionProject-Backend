@@ -143,7 +143,7 @@
 
                     c.AddFluentValidationRules();
                 })
-                .AddSwaggerExamplesFromAssemblyOf<Startup>();
+               .AddSwaggerExamplesFromAssemblyOf<Program>();
 
 
     }

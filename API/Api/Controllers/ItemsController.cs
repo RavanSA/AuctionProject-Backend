@@ -44,7 +44,7 @@
             return this.Ok(result);
         }
 
-        [HttpPost]
+        [HttpPost,Authorize]
         public async Task<IActionResult> Post([FromBody] CreateItemCommand model)
         {
             var result = await this.Mediator.Send(model);

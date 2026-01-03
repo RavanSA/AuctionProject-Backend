@@ -1,6 +1,7 @@
 ﻿namespace Application.Items.Queries.List
 {
     using Common.Models;
+    using Domain.Entities;
     using MediatR;
     using System;
 
@@ -17,5 +18,7 @@
 
         public int Page { get; set; } = 1;
         public int PageSize { get; set; } = 20;
+
+        public ItemStatus? Status { get; set; }  
     }
 }

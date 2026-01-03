@@ -38,8 +38,8 @@
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => Guid.Parse(src.UserId)))
             .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
-            .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime.ToUniversalTime()))
-            .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime.ToUniversalTime()));
+            .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime.ToLocalTime()))
+            .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime.ToLocalTime()));
                 
                 }
     }

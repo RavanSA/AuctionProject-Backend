@@ -37,4 +37,15 @@ public static class HangfireConfiguration
 
 
     }
+
+
+
+}
+
+public class HangfireAllowAll : Hangfire.Dashboard.IDashboardAuthorizationFilter
+{
+    public bool Authorize(Hangfire.Dashboard.DashboardContext context)
+    {
+        return true;
+    }
 }

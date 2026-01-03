@@ -31,7 +31,7 @@
         public string CategoryId { get; set; }  
 
         public string MainItemPicture { get; set; }
-
+        public ItemStatus Status { get; set; }
         public ICollection<PictureResponseModel> Pictures { get; set; }
     }
 }

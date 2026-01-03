@@ -82,7 +82,7 @@
             }
 
             await _context.SaveChangesAsync(cancellationToken);
-
+            _logger.LogInformation($"Pictures for ItemId={request.ItemId} saved successfully", request.ItemId);
             return Result.Success();
         }
     }
